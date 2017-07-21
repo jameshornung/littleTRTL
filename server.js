@@ -256,4 +256,12 @@ app.post("/update-school/:id", function(req, res) {
   });
 });
 
+//++++++++++++++++++++
+//LISTEN ON PORT 3001
+//++++++++++++++++++++
+
+app.listen(3001, function() {
+  console.log("Success: Running on Port 3001");
+});
+
 module.exports = app;

@@ -26,7 +26,9 @@ import {
   Route,
   Link
 } from 'react-router-dom';
+
 import FilterCandidates from './components/FilterCandidates.js';
+import AddCandidates from './components/AddCandidates.js';
 
 const Home = () => (
   <div>
@@ -38,7 +40,7 @@ const Home = () => (
 const Add = () => (
   <div>
     <h2>Add New Candidates</h2>
-    <p>Need to add component for adding prospects to the database (examples in miniTrtl)</p>
+    <AddCandidates />
   </div>
 )
 

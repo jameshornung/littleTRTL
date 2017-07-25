@@ -121,10 +121,12 @@ const filter = () => {
 
       var deleteOption = document.createElement("span");
       var deleteText = document.createTextNode("Delete");
+      deleteOption.setAttribute("className", "deleteCandidate");
       deleteOption.appendChild(deleteText);
 
       var updateOption = document.createElement("span");
       var updateText = document.createTextNode("Update");
+      updateOption.setAttribute("className", "updateCandidate");
       updateOption.appendChild(updateText);
 
       var candidateInfo = document.createTextNode(data[i].firstName + " " + data[i].lastName + " " + data[i].university + " " + data[i].status);
@@ -141,22 +143,38 @@ const filter = () => {
 };
 
 //-----
-//Click Edit Button
+//Click Edit Span
 //-----
 
+// jQuery example of functionality
 
+// $(document).on("click", ".updateCandidate", function() {
+//   // Save the p tag that encloses the button
+//   var selected = $(this).parent();
+//   // console.log("selected = ", selected)
+//   // Make an ajax call to find the prospect
+//   // This uses the data-id of the p-tag, which is linked to the specific prospect
+//   $.ajax({
+//     type: "GET",
+//     url: "/find-one/" + selected.attr("data-id"),
+//     success: function(data) {
+//       // Fill the inputs on the update form with the data that the ajax call collected
+//       $("#updateFirstName").val(data.firstName);
+//       $("#updateLastName").val(data.lastName);
+//       $("#updateUniversity").val(data.university);
+//       $("#updateStatus").val(data.status);
+//       // Add a submit button to the form
+//       $("#updateButtonHolder").html("<button class='submitButton updateProspect' data-id='" + data._id + "'>Submit</button>");
+//     }
+//   });
+// });
 
 
 //-----
-//Click Delete Button
+//Click Delete Span
 //-----
 
-const deleteCandidate = () => {
-  console.log("clicked")
-};
-
-
- 
+// jQuery example of functionality
 
 // $(document).on("click", ".deleteCandidate", function() {
 //   // Save the p tag that encloses the button

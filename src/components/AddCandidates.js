@@ -90,14 +90,7 @@ class AddCandidates extends Component {
 
 export default AddCandidates;
 
-// document.getElementById("addProspect").addEventListener("click", function(){
 
-//   var data = "firstName=" + document.getElementById("firstName").value + "&lastName=" + document.getElementById("lastName").value + "&university=" + document.getElementById("university").value + "&status=" + document.getElementById("status").value;
-
-//   request.open('POST', '/submit', true);
-//   request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
-//   request.send(data);
-//   })
 
 
   

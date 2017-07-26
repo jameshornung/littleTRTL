@@ -27,6 +27,7 @@ const app = express();
 //++++++++++++++++++++
 
 app.use(logger("dev"));
+app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({
   extended: false
 }));
@@ -176,6 +177,8 @@ app.get("/find-one-school/:id", function(req, res) {
 
 // Csubmit a new candidate
 app.post("/submit", function(req, res) {
+
+  // console.log("req.body= ", req.body)
 
   var newCandidate = new Candidate(req.body);
   

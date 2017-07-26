@@ -40,18 +40,17 @@ class AddCandidates extends Component {
   }
 
   handleSubmit(event) {
-    alert('Candidate Added: ' + this.state.firstName + " " + this.state.lastName);
-    event.preventDefault();
-    axios.post('/submit', {
-      firstName: this.state.firstName,
-      lastName: this.state.lastName,
-      university: this.state.University,
-      status: this.state.status
-    }).then(function (response) {
-      console.log(response);
-    })
-    .catch(function (error) {
-      console.log(error);
+    // alert('Candidate Added: ' + this.state.firstName + " " + this.state.lastName);
+    // event.preventDefault();
+    axios({
+      method: 'post',
+      url: '/submit',
+      data: {
+        firstName: this.state.firstName,
+        lastName: this.state.lastName,
+        university: this.state.university,
+        status: this.state.status
+      }
     });
   }
 
@@ -91,6 +90,14 @@ class AddCandidates extends Component {
 
 export default AddCandidates;
 
+// document.getElementById("addProspect").addEventListener("click", function(){
+
+//   var data = "firstName=" + document.getElementById("firstName").value + "&lastName=" + document.getElementById("lastName").value + "&university=" + document.getElementById("university").value + "&status=" + document.getElementById("status").value;
+
+//   request.open('POST', '/submit', true);
+//   request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+//   request.send(data);
+//   })
 
 
   

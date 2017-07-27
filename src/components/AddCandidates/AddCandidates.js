@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import './style.css';
+
 const axios = require('axios');
 
 
@@ -62,7 +64,6 @@ class AddCandidates extends Component {
         <label>
           Last Name:
           <input type="text" value={this.lastName} onChange={this.addLastName} />
-          { console.log(this.state) }
         </label>
         <label>
           University:

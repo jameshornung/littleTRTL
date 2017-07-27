@@ -27,8 +27,8 @@ import {
   Link
 } from 'react-router-dom';
 
-import FilterCandidates from './components/FilterCandidates.js';
-import AddCandidates from './components/AddCandidates.js';
+import FilterCandidates from './components/FilterCandidates/FilterCandidates.js';
+import AddCandidates from './components/AddCandidates/AddCandidates.js';
 
 const Home = () => (
   <div>

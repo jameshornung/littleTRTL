@@ -17,7 +17,7 @@ mongoose.Promise = Promise;
 //MODELS
 //++++++++++++++++++++
 
-var Talent = require("./models/Talent.js");
+var Candidate = require("./models/Candidate.js");
 var University = require("./models/University.js");
 
 var User = require('./models/User.js');

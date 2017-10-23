@@ -6,13 +6,11 @@ var db = mongoose.connection;
 var passport = require('passport');
 var Strategy = require('passport-local');
 
-var Talent = require('./../models/Talent.js');
-var Existing = require('./../models/Existing.js');
-var DoNot = require('./../models/DoNot.js');
+var Candidate = require('./../models/Candidate.js');
 var User = require('./../models/User.js');
 
 var University = require('./../models/University.js');
-var Program = require('./../models/Program.js');
+
 
 
 //++++++++++++++++++++

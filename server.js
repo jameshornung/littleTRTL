@@ -2,10 +2,14 @@
 //DEPENDENCIES
 //++++++++++++++++++++
 
-const express = require("express");
-const bodyParser = require("body-parser");
-const logger = require("morgan");
-const mongoose = require("mongoose");
+var express = require("express");
+var mongojs = require("mongojs");
+var bodyParser = require("body-parser");
+var logger = require("morgan");
+var mongoose = require("mongoose");
+var exphbs = require('express-handlebars');
+var passport = require('passport');
+var Strategy = require('passport-local');
 
 mongoose.Promise = Promise;
 
@@ -13,31 +17,44 @@ mongoose.Promise = Promise;
 //MODELS
 //++++++++++++++++++++
 
-const Candidate = require("./models/Candidate.js");
-const University = require("./models/University.js");
+var Talent = require("./models/Talent.js");
+var University = require("./models/University.js");
+
+var User = require('./models/User.js');
 
 //++++++++++++++++++++
 //DECLARE THE APP
 //++++++++++++++++++++
 
-const app = express();
+var app = express();
 
 //++++++++++++++++++++
 //CONFIGURE THE APP
 //++++++++++++++++++++
 
-app.use(logger("dev"));
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({
-  extended: false
-}));
-app.use(express.static("public"));
+app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
+app.set('view engine', 'handlebars');
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.static(process.cwd() + '/public'));
+
+app.use(require('cookie-parser')());
+app.use(require('express-session')({ secret: 'keyboard cat', resave: false, saveUninitialized: false }));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+var routes = require('./controllers/controller.js');
+app.use('/', routes);
 
 //++++++++++++++++++++
 //DATABASE CONFIGURATION
 //++++++++++++++++++++
 
-mongoose.connect("mongodb://localhost/trtlJR");
+// localhost connection
+mongoose.connect('mongodb://localhost/trtl');
+
+// mlab connection (for talentPool database)
+// mongoose.connect("mongodb://james:ellis@ds157584.mlab.com:57584/heroku_bwvb9wc7");
 var db = mongoose.connection;
 
 // Show any mongoose errors
@@ -51,220 +68,37 @@ db.once("open", function() {
 });
 
 //++++++++++++++++++++
-//ROUTES
+//PASSPORT CONFIGURATION
 //++++++++++++++++++++
 
-//-----
-//Get Requests
-//-----
+passport.use(new Strategy(
+  function(username, password, cb) {
+    User.findOne({username: username}, function(err, user) {
+      if (err) { return cb(err); }
+      if (!user) { return cb(null, false); }
+      if (user.password != password) { return cb(null, false); }
+      return cb(null, user);
+    });
+  }));
 
-app.get("/", function(req, res) {
-  res.send(index.html);
+passport.serializeUser(function(user, cb) {
+  cb(null, user.id);
 });
 
-// get all candidates in the collection
-app.get("/all", function(req, res) {
-  Candidate.find({}, function(error, found) {
-    if (error) {
-      console.log(error);
-    }
-    else {
-      res.json(found);
-    }
+passport.deserializeUser(function(id, cb) {
+  // console.log(db)
+  User.findById(id, function (err, user) {
+    if (err) { return cb(err); }
+    cb(null, user);
   });
 });
 
-// delete a single candidate from the collection
-app.get("/delete/:id", function(req, res) {
-  Candidate.find({ _id: req.params.id }).remove(function(error, removed){
-    if(error){
-      console.log(error);
-    }
-    else{
-      console.log(removed);
-      res.send(removed);
-    }
-  })
-});
-
-// find a single candidate (by unique id)
-app.get("/find-one/:id", function(req, res) {
-  Candidate.findOne({ _id : req.params.id }, function(error, candidate){
-    if (error){
-      console.log(error);
-      res.send(error);
-    }
-    else{
-      console.log(candidate);
-      res.send(candidate);
-    }
-  })
-});
-
-
-// +++++
-// Filter By Custom Parameters
-// +++++
-
-app.get("/filter/", function(req, res) {
-
-  var query = {};
-  // console.log("req.query", req.query)
-
-  if(req.query.university) { query.university = req.query.university }
-  if(req.query.status){ query.status = req.query.status }
-
-  console.log("query = ", query);
-
-  Candidate.find(query, function(error, found) {
-    if (error) {
-      console.log(error);
-      res.send(error);
-    }
-    else {
-      console.log("found = ", found);
-      res.send(found);
-    }
-  });
-});
-
-// ++++++++++++
-// SCHOOLS COLLECTION 
-// ++++++++++++
-
-// get all schools from the universities collection
-app.get("/all-schools", function(req, res) {
-  University.find({}, function(error, found) {
-    if (error) {
-      console.log(error);
-    }
-    else {
-      res.json(found);
-    }
-  });
-});
-
-// delete a school
-app.get("/delete-school/:id", function(req, res) {
-  University.find({ _id: req.params.id }).remove(function(error, removed){
-    if(error){
-      console.log(error);
-    }
-    else{
-      console.log(removed);
-      res.send(removed);
-    }
-  })
-});
-
-// find one school in the university collection (by unique id)
-app.get("/find-one-school/:id", function(req, res) {
-  University.findOne({ _id : req.params.id }, function(error, university){
-    if (error){
-      console.log(error);
-      res.send(error);
-    }
-    else{
-      console.log(university);
-      res.send(university);
-    }
-  })
-});
-
-//-----
-//Post Requests
-//-----
-
-// Csubmit a new candidate
-app.post("/submit", function(req, res) {
-
-  // console.log("req.body= ", req.body)
-
-  var newCandidate = new Candidate(req.body);
-  
-  console.log("New Candidate: ", newCandidate);
-
-  newCandidate.save(function(err, doc){
-    if (err){
-      console.log("Save Error: ", err);
-    }
-    else{
-      console.log("Saved: ", doc);
-      res.send(doc);
-    }
-  })
-});
-
-// update a single candidate
-app.post("/update/:id", function(req, res) {
-  Candidate.findByIdAndUpdate(req.params.id, {
-    $set: {
-      "firstName": req.body.firstName,
-      "lastName": req.body.lastName,
-      "university": req.body.university,
-      "status": req.body.status,
-      "modified": Date.now()
-    }
-  }, function(error, edited) {
-    if (error) {
-      console.log(error);
-      res.send(error);
-    }
-    else {
-      console.log(edited);
-      res.send(edited);
-    }
-  });
-}); 
-
-// ++++++++++++
-// SCHOOLS COLLECTION 
-// ++++++++++++
-
-// add a new school to the university collection
-app.post("/submit-school", function(req, res) {
-
-  var newUniversity = new University(req.body);
-  // console.log(newUniversity);
-
-  newUniversity.save(function(err, doc){
-    if (err){
-      console.log("Save Error: ", err);
-    }
-    else{
-      console.log("Saved: ", doc);
-      res.send(doc);
-    }
-  })
-});
-
-
-// update an existing school in the university collection
-app.post("/update-school/:id", function(req, res) {
-  University.findByIdAndUpdate(req.params.id, {
-    $set: {
-      "universityName": req.body.universityName,
-      "campusLocation": req.body.campusLocation,
-      "modified": Date.now()
-    }
-  }, function(error, edited) {
-    if (error) {
-      console.log(error);
-      res.send(error);
-    }
-    else {
-      console.log(edited);
-      res.send(edited);
-    }
-  });
-});
 
 //++++++++++++++++++++
-//LISTEN ON PORT 3001
+//LISTEN ON PORT 3000
 //++++++++++++++++++++
 
-app.listen(3001, function() {
-  console.log("Success: Running on Port 3001");
+var PORT = process.env.PORT || 3000;
+app.listen(PORT, function() {
+  console.log("Success: Running on Port 3000");
 });
-
-module.exports = app;

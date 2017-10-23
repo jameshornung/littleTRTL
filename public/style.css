@@ -1,0 +1,92 @@
+/*++++++++++
+Header and Nav Bar
+++++++++++*/
+
+header{
+	height: 150px;
+}
+
+
+.trtlHeader{
+	line-height: 150px;
+	margin-top: 0px;
+	margin-bottom: 0px;
+}
+
+/*++++++++++
+Login Form
+++++++++++*/
+
+.loginForm{
+	width: 20%;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 100px;
+}
+
+/*++++++++++
+Input Forms
+++++++++++*/
+
+#searchByNameInput{
+	width: 50%;
+}
+
+.inputFormRow{
+	margin-top: 30px;
+	box-sizing: border-box;
+	height: 350px;
+	overflow: auto;
+
+}
+
+.inputFormDiv{
+	padding: 25px !important;
+	height: 100%;
+}
+
+input{
+	height: 20px !important;
+}
+
+/*++++++++++
+Results Div
+++++++++++*/
+
+.deleteCandidate{
+	margin-left: 10px;
+	padding-left: 5px;
+	padding-right: 5px;
+	color: red;
+	cursor: pointer;
+}
+
+.updateCandidate{
+	margin-left: 10px;
+	color: green;
+	padding-left: 5px;
+	padding-right: 5px;
+	border: 1px solid green;
+	border-radius: 10px;
+	cursor: pointer;
+}
+
+.deleteSchool{
+	margin-left: 10px;
+	padding-left: 5px;
+	padding-right: 5px;
+	color: red;
+	border: 1px solid red;
+	border-radius: 10px;
+	cursor: pointer;
+}
+
+.updateSchool{
+	margin-left: 10px;
+	color: green;
+	padding-left: 5px;
+	padding-right: 5px;
+	border: 1px solid green;
+	border-radius: 10px;
+	cursor: pointer;
+}

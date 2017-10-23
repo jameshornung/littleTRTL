@@ -1,0 +1,113 @@
+<!-- NAVBAR -->
+
+{{#if user}}
+
+<div class="navbar-fixed">
+  <nav>
+    <div class="nav-wrapper white">
+      <a href="/" class="brand-logo left" id="logoBox"><img src="./style/trilogylogo.jpg" id="logo"></a>
+      <ul id="nav-mobile" class="right hide-on-med-and-down">
+        <li><a class="black-text" href="/potential-hires">Potential Hires</a></li>
+        <li><a class="black-text" href="/existing-pipeline">Existing Pipeline</a></li>
+        <li class="active"><a class="black-text" href="/do-not">Do Not Move Forward</a></li>
+        <li><a class="black-text" href="/add"><i class="material-icons small">add</i></a></li>
+      </ul>
+    </div>
+  </nav>
+</div>
+
+
+
+
+
+<!-- SEARCH FILTERS -->
+
+<!-- <div class="row">
+  <div class="col s12">
+    <button id="allProspects" class="filterButton">Show Talent Pool</button>
+  </div>
+</div> -->
+
+<div class="row">
+  <div class="col s12">
+    <h5>Filter</h5>
+
+    <div class="input-field col s3">
+      <select id="filterUniversity">
+        <option value="">All</option>
+      </select> 
+      <label>University</label>
+    </div>
+    <div class="input-field col s3">
+      <select id="filterRole">
+        <option value="">All</option>
+        <option value="TA">TA</option>
+        <option value="Instructor">Instructor</option>
+      </select>
+      <label>Role</label>
+    </div>
+    <div class="input-field col s3">
+      <select id="filterProgram">
+        <option value="">All</option>
+        <option value="FSF">FSF</option>
+        <option value="Data">Data Viz</option>
+        <option value="UI/UX">UI/UX</option>
+      </select>
+      <label>Program</label>
+    </div>
+    <div class="input-field col s3">
+      <select id="filterStage">
+        <option value="">All</option>
+        <option value="HR Interview">HR Interview</option>
+        <option value="Tech Interview">Tech Interview</option>
+        <option value="Final Interview">Final Interview</option>
+      </select>
+      <label>Stage</label>
+    </div>
+
+    <div class="submitButtonHolder">
+      <button class="submitButton" type="submit" id="filterRejects">Submit</button>
+    </div>
+  </div>
+
+
+<div class="row">
+  <div class="col s12" id="results">
+  </div>
+</div>
+
+{{^}}
+
+<h4 class="center red-text loginMessage">Please <a href="/">login</a> to view this content</h4>
+
+{{/if}}
+
+<script type="text/javascript">
+
+  var request = new XMLHttpRequest();
+
+  function generateFilterUniversities(){
+    request.open('GET', 'all-schools', true);
+    request.onload = function() {
+      if (request.status >= 200 && request.status < 400) {
+        var data = JSON.parse(request.responseText);
+        console.log("Margaritas!")
+        for (var i = 0; i < data.length; i++) {
+          var universityOption = document.createElement("option");
+          universityOption.setAttribute("data-id", data[i]._id);
+          universityOption.setAttribute("class", "universityDropdown");
+          var universityNameText = document.createTextNode(data[i].universityName);
+          universityOption.appendChild(universityNameText);
+          document.getElementById("filterUniversity").appendChild(universityOption);
+          $('select').material_select();
+        }
+      } 
+      else {
+        console.log("server error")
+      }
+    };
+    request.send();
+  };
+
+  generateFilterUniversities();
+</script>

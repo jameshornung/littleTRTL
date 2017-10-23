@@ -1,0 +1,47 @@
+body{
+
+}
+
+.wrapper{
+	padding: 10px;
+}
+
+/*+++++++++++
+Navbar
++++++++++++*/
+
+#logoBox{
+	height: 100%;
+	box-sizing: border-box;
+	padding: 5px;
+}
+
+#logo{
+	height: 100%;
+}
+
+/*+++++++++++
+Input Form
++++++++++++*/
+
+
+
+/*++++++++++
+Results Div
+++++++++++*/
+
+.deleter{
+	/*margin-left: 10px;*/
+	padding-left: 5px;
+	padding-right: 5px;
+	color: red;
+	cursor: pointer;
+}
+
+.updater{
+	/*margin-left: 10px;*/
+	padding-left: 5px;
+	padding-right: 5px;
+	color: green;
+	cursor: pointer;
+}

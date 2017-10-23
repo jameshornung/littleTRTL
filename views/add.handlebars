@@ -1,0 +1,169 @@
+<!-- NAVBAR -->
+
+{{#if user}}
+
+<div class="navbar-fixed">
+  <nav>
+    <div class="nav-wrapper white">
+      <a href="/" class="brand-logo left" id="logoBox"><img src="./style/trilogylogo.jpg" id="logo"></a>
+      <ul id="nav-mobile" class="right hide-on-med-and-down">
+        <li><a class="black-text" href="/potential-hires">Potential Hires</a></li>
+        <li><a class="black-text" href="/existing-pipeline">Existing Pipeline</a></li>
+        <li><a class="black-text" href="/do-not">Do Not Move Forward</a></li>
+      </ul>
+    </div>
+  </nav>
+</div>
+
+<div class="wrapper">
+
+  <!-- INPUT FORM - Add to Talent Pool -->
+  <div class="row">
+    <div class="col s12">
+      <h5>Add Talent</h5>
+      <form>
+        <div class="row">
+          <div class="col s3">
+            First:
+            <div class="input-field inline">
+              <input id="firstName" type="text" required="true">
+              <label for="firstName">First Name</label>
+            </div>
+          </div>
+          <div class="col s3">
+            Last:
+            <div class="input-field inline">
+              <input id="lastName" type="text" required="true">
+              <label for="lastName">Last Name</label>
+            </div>
+          </div>
+          <div class="col s3">
+            E-Mail:
+            <div class="input-field inline">
+              <input id="email" type="email" class="validate">
+              <label for="email" data-error="wtj...enter a valid email">E-Mail</label>
+            </div>
+          </div>
+          <div class="col s3">
+            Phone:
+            <div class="input-field inline">
+              <input id="phone" type="text">
+              <label for="phone">Phone #</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="input-field col s3">
+            <select id="university">
+            </select>
+            <label>University</label>
+          </div>
+          <div class="input-field col s3">
+            <select id="program">
+              <option value="" disabled selected>Select Program</option>
+              <option value="FSF">FSF</option>
+              <option value="Data">Data Viz</option>
+              <option value="UI/UX">UI/UX</option>
+            </select>
+            <label>Program</label>
+          </div>
+          <div class="input-field col s3">
+            <select id="role">
+              <option value="" disabled selected>Choose Role</option>
+              <option value="TA">TA</option>
+              <option value="Instructor">Instructor</option>
+            </select>
+            <label>Role</label>
+          </div>
+          <div class="input-field col s3">
+            <select id="stage">
+              <option value="" disabled selected>Choose Stage</option>
+              <option value="HR interview">HR Interview</option>
+              <option value="Tech Interview">Tech Interview</option>
+              <option value="Final Interview">Final Interview</option>
+            </select>
+            <label>Pending Interview Stage</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col s12">
+            <div class="input-field">
+              <textarea id="notes" class="materialize-textarea"></textarea> 
+              <label for="Notes">Notes on candidate</label>
+            </div>
+          </div>
+        </div>
+        <div class="row submitButtonHolder">
+          <div class="col s12 center">
+            <button class="submitButton" type="submit" id="addTalent">Potential Hires</button>
+            <button class="submitButton" type="submit" id="addExisting">Existing Talent</button>
+            <button class="submitButton" type="submit" id="addNix">Do Not Move Forward</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+  <!-- INPUT FORM - Add Program -->
+
+<!--   <div class="row">
+    <div class="col s12">
+      Enter New Program:
+      <div class="input-field inline">
+        <input id="programName" type="text">
+        <label for="programName">Program Name</label>
+      </div>
+      <div class="row submitButtonHolder">
+        <div class="col s12 center">
+          <button class="submitButton" type="submit" id="addProgram">Submit</button>
+        </div>
+      </div>
+    </div>
+  </div> -->
+
+</div>
+
+{{^}}
+
+<h4 class="center red-text loginMessage">Please <a href="/">login</a> to view this content</h4>
+
+{{/if}}
+
+<script>
+
+var request = new XMLHttpRequest();
+
+  function generateUniversities(){
+    request.open('GET', 'all-schools', true);
+    request.onload = function() {
+      if (request.status >= 200 && request.status < 400) {
+        var data = JSON.parse(request.responseText);
+        var disabledOption = document.createElement("option");
+        disabledOption.setAttribute("class", "universityDropdown");
+        disabledOption.setAttribute("value", "");
+        var disabledOptionText = document.createTextNode("Select University")
+        disabledOption.appendChild(disabledOptionText);
+        console.log("Psssst....Herb is gone.  Someone tell Sarah!")
+        document.getElementById("university").appendChild(disabledOption);
+        for (var i = 0; i < data.length; i++) {
+          var universityOption = document.createElement("option");
+          universityOption.setAttribute("data-id", data[i]._id);
+          universityOption.setAttribute("class", "universityDropdown");
+          var universityNameText = document.createTextNode(data[i].universityName);
+          universityOption.appendChild(universityNameText);
+          document.getElementById("university").appendChild(universityOption);
+          $('select').material_select();
+        }
+      } 
+      else {
+        console.log("server error")
+      }
+    };
+    request.send();
+  };
+
+  generateUniversities();
+
+  </script>
